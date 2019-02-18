@@ -9,7 +9,8 @@ class App extends Component {
       { name: "Wang", age: 36 },
       { name: "Nadal", age: 33 }
     ],
-    otherState: "something"
+    otherState: "something",
+    showPersons: false
   };
 
   switchNameHandler = newName => {
@@ -34,6 +35,13 @@ class App extends Component {
     });
   };
 
+  togglePersonsHandler = () => {
+    const showPersons = this.state.showPersons;
+    this.setState({
+      showPersons: !showPersons
+    });
+  };
+
   render() {
     // inline css
     const style = {
@@ -41,34 +49,39 @@ class App extends Component {
       font: "inheirt",
       border: "1px solid blue",
       padding: "8px",
-      cursor: 'pointer'
+      cursor: "pointer"
     };
 
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p>This is really working!</p>
-        <button style={style} onClick={() => this.switchNameHandler("Brady!")}>
-          Switch Name
+        <button style={style} onClick={this.togglePersonsHandler}>
+          Toggle persons
         </button>
-         {/* 不建議此寫法 因效能差 */}
-        <Person
-          name={this.state.person[0].name}
-          age={this.state.person[0].age}
-        />
-        {/* Component tag一定要大寫開頭 */}
-        <Person
-          name={this.state.person[1].name}
-          age={this.state.person[1].age}
-          click={this.switchNameHandler.bind(this, "Brady!!!")}
-          changed={this.nameChangedHandler}>
-          {/* 盡可能使用bind寫法 */}
-          Job: Professional baseball player
-        </Person>
-        <Person
-          name={this.state.person[2].name}
-          age={this.state.person[2].age}
-        />
+        {/* 不建議此寫法 因效能差 */}
+        {
+        this.state.showPersons === true ?
+        <div>
+          <Person
+            name={this.state.person[0].name}
+            age={this.state.person[0].age}
+          />
+          {/* Component tag一定要大寫開頭 */}
+          <Person
+            name={this.state.person[1].name}
+            age={this.state.person[1].age}
+            click={this.switchNameHandler.bind(this, "Brady!!!")}
+            changed={this.nameChangedHandler}
+          >
+            {/* 盡可能使用bind寫法 */}
+            Job: Professional baseball player
+          </Person>
+          <Person
+            name={this.state.person[2].name}
+            age={this.state.person[2].age}
+          />
+        </div> : null}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!!!' ))
