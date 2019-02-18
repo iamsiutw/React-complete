@@ -52,16 +52,10 @@ class App extends Component {
       cursor: "pointer"
     };
 
-    return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p>This is really working!</p>
-        <button style={style} onClick={this.togglePersonsHandler}>
-          Toggle persons
-        </button>
-        {/* 不建議此寫法 因效能差 */}
-        {
-        this.state.showPersons === true ?
+    let persons = null;
+
+    if(this.state.showPersons) {
+      persons = (
         <div>
           <Person
             name={this.state.person[0].name}
@@ -81,7 +75,20 @@ class App extends Component {
             name={this.state.person[2].name}
             age={this.state.person[2].age}
           />
-        </div> : null}
+        </div>
+      )
+    }
+
+    return (
+      <div className="App">
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>
+        <button style={style} onClick={this.togglePersonsHandler}>
+          Toggle persons
+        </button>
+        {/* 不建議此寫法 因效能差 */}
+        {persons}
+        
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!!!' ))
