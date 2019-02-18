@@ -12,7 +12,7 @@ class App extends Component {
     otherState: "something"
   };
 
-  switchNameHandler = (newName) => {
+  switchNameHandler = newName => {
     // console.log('click');
     // state和setState只有component才有
     this.setState({
@@ -24,22 +24,45 @@ class App extends Component {
     });
   };
 
+  nameChangedHandler = event => {
+    this.setState({
+      person: [
+        { name: "Messie", age: 38 },
+        { name: event.target.value, age: 36 },
+        { name: "Nadal", age: 33 }
+      ]
+    });
+  };
+
   render() {
+    // inline css
+    const style = {
+      backgroundColor: "white",
+      font: "inheirt",
+      border: "1px solid blue",
+      padding: "8px",
+      cursor: 'pointer'
+    };
+
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p>This is really working!</p>
-        
-        <button onClick={() => this.switchNameHandler('Brady!')}>Switch Name</button>  {/* 不建議此寫法 因效能差*/}
+        <button style={style} onClick={() => this.switchNameHandler("Brady!")}>
+          Switch Name
+        </button>
+         {/* 不建議此寫法 因效能差 */}
         <Person
           name={this.state.person[0].name}
           age={this.state.person[0].age}
         />
+        {/* Component tag一定要大寫開頭 */}
         <Person
           name={this.state.person[1].name}
           age={this.state.person[1].age}
-          click={this.switchNameHandler.bind(this, 'Brady!!!')} 
-        > { /* 盡可能使用此寫法 */}
+          click={this.switchNameHandler.bind(this, "Brady!!!")}
+          changed={this.nameChangedHandler}>
+          {/* 盡可能使用bind寫法 */}
           Job: Professional baseball player
         </Person>
         <Person
