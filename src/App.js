@@ -4,35 +4,38 @@ import Person from "./Person/Person";
 
 class App extends Component {
   state = {
-    person: [
-      { name: "Messie", age: 38 },
-      { name: "Wang", age: 36 },
-      { name: "Nadal", age: 33 }
+    persons: [
+      { id: "qaz", name: "Messie", age: 38 },
+      { id: "wsx", name: "Wang", age: 36 },
+      { id: "edc", name: "Nadal", age: 33 }
     ],
     otherState: "something",
     showPersons: false
   };
 
-  switchNameHandler = newName => {
-    // console.log('click');
-    // state和setState只有component才有
-    this.setState({
-      person: [
-        { name: newName, age: 38 },
-        { name: "Wang", age: 36 },
-        { name: "Nadal", age: 39 }
-      ]
-    });
+  deletePersonHandler = personIndex => {
+    // const person = this.state.person;
+    const person = [...this.state.persons];
+    person.splice(personIndex, 1);
+    this.setState({ persons: person });
   };
 
-  nameChangedHandler = event => {
-    this.setState({
-      person: [
-        { name: "Messie", age: 38 },
-        { name: event.target.value, age: 36 },
-        { name: "Nadal", age: 33 }
-      ]
+  nameChangedHandler = (event, id) => {
+    // 取得index
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
     });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    // const person = Object.assign({}, this.state.persons[personIndex])
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
   };
 
   togglePersonsHandler = () => {
@@ -53,30 +56,23 @@ class App extends Component {
     };
 
     let persons = null;
-
-    if(this.state.showPersons) {
+    // 用map()方法render陣列資料
+    if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.person[0].name}
-            age={this.state.person[0].age}
-          />
-          {/* Component tag一定要大寫開頭 */}
-          <Person
-            name={this.state.person[1].name}
-            age={this.state.person[1].age}
-            click={this.switchNameHandler.bind(this, "Brady!!!")}
-            changed={this.nameChangedHandler}
-          >
-            {/* 盡可能使用bind寫法 */}
-            Job: Professional baseball player
-          </Person>
-          <Person
-            name={this.state.person[2].name}
-            age={this.state.person[2].age}
-          />
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                key={person.id}
+                name={person.name}
+                age={person.age}
+                click={() => this.deletePersonHandler(index)}
+                changed={event => this.nameChangedHandler(event, person.id)}
+              />
+            );
+          })}
         </div>
-      )
+      );
     }
 
     return (
@@ -88,7 +84,6 @@ class App extends Component {
         </button>
         {/* 不建議此寫法 因效能差 */}
         {persons}
-        
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!!!' ))
