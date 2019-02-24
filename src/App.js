@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
-import Radium, { StyleRoot } from "radium";
+import classes from "./App.css";
 import Person from "./Person/Person";
 
 class App extends Component {
@@ -47,21 +46,8 @@ class App extends Component {
   };
 
   render() {
-    // inline css
-    const style = {
-      backgroundColor: "green",
-      color: "white",
-      font: "inheirt",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer",
-      ":hover": {
-        backgroundColor: "lightgreen",
-        color: "black"
-      }
-    };
-
     let persons = null;
+    let btnClass = '';
     // 用map()方法render陣列資料
     if (this.state.showPersons) {
       persons = (
@@ -79,39 +65,34 @@ class App extends Component {
           })}
         </div>
       );
-      // 動態套用style
-      style.backgroundColor = "red";
-      style[":hover"] = {
-        backgroundColor: "salmon",
-        color: "black"
-      };
+      btnClass = classes.Red;      
     }
 
-    const classes = [];
+    const assignedClasses = [];
 
     if (this.state.persons.length <= 2) {
-      classes.push("red"); // classes = ["red"]
+      assignedClasses.push( classes.red ); // classes = ["red"]
     }
 
     if (this.state.persons.length <= 1) {
-      classes.push("bold"); // classes = ["red", "bold"]
+      assignedClasses.push( classes.bold ); // classes = ["red", "bold"]
     }
 
     return (
-      <StyleRoot>
-        <div className="App">
+      
+      <div className={classes.App}>
           <h1>Hi, I'm a React App</h1>
-          <p className={classes.join(" ")}>This is really working!</p>
-          <button style={style} onClick={this.togglePersonsHandler}>
+        <p className={assignedClasses.join(" ")}>This is really working!</p>
+          <button className={btnClass} onClick={this.togglePersonsHandler}>
             Toggle persons
           </button>
           {/* 不建議此寫法 因效能差 */}
           {persons}
         </div>
-      </StyleRoot>
+     
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!!!' ))
   }
 }
 
-export default Radium(App);
+export default App;
