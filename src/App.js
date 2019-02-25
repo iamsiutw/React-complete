@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./App.css";
 import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 class App extends Component {
   state = {
@@ -47,49 +48,48 @@ class App extends Component {
 
   render() {
     let persons = null;
-    let btnClass = '';
+    let btnClass = "";
     // 用map()方法render陣列資料
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
             return (
-              <Person
-                key={person.id}
-                name={person.name}
-                age={person.age}
-                click={() => this.deletePersonHandler(index)}
-                changed={event => this.nameChangedHandler(event, person.id)}
-              />
+              <ErrorBoundary key={person.id}>
+                <Person                 
+                  name={person.name}
+                  age={person.age}
+                  click={() => this.deletePersonHandler(index)}
+                  changed={event => this.nameChangedHandler(event, person.id)}
+                />
+              </ErrorBoundary>
             );
           })}
         </div>
       );
-      btnClass = classes.Red;      
+      btnClass = classes.Red; // CSS Module
     }
 
     const assignedClasses = [];
 
     if (this.state.persons.length <= 2) {
-      assignedClasses.push( classes.red ); // classes = ["red"]
+      assignedClasses.push(classes.red); // classes = ["red"]
     }
 
     if (this.state.persons.length <= 1) {
-      assignedClasses.push( classes.bold ); // classes = ["red", "bold"]
+      assignedClasses.push(classes.bold); // classes = ["red", "bold"]
     }
 
     return (
-      
       <div className={classes.App}>
-          <h1>Hi, I'm a React App</h1>
+        <h1>Hi, I'm a React App</h1>
         <p className={assignedClasses.join(" ")}>This is really working!</p>
-          <button className={btnClass} onClick={this.togglePersonsHandler}>
-            Toggle persons
-          </button>
-          {/* 不建議此寫法 因效能差 */}
-          {persons}
-        </div>
-     
+        <button className={btnClass} onClick={this.togglePersonsHandler}>
+          Toggle persons
+        </button>
+        {/* 不建議此寫法 因效能差 */}
+        {persons}
+      </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!!!' ))
   }
