@@ -7,7 +7,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props, 'app.js constructor...');
+    console.log('app.js constructor...');
   }
 
   state = {
@@ -29,6 +29,15 @@ class App extends Component {
   // render 後執行
   componentDidMount() {
     console.log('app.js componentDidMount');
+  }
+
+  shouldComponentUpdate() {
+    console.log('app.js shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('app.js componentDidUpdate');
   }
 
   deletePersonHandler = personIndex => {
