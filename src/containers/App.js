@@ -4,10 +4,9 @@ import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-    console.log('app.js constructor...');
+    console.log("app.js constructor...");
   }
 
   state = {
@@ -17,27 +16,27 @@ class App extends Component {
       { id: "edc", name: "Nadal", age: 33 }
     ],
     otherState: "something",
-    showPersons: false
+    showPersons: false,
+    showCockpit: true
   };
 
   static getDerivedStateFromProps(props, state) {
-    console.log('app.js getDerivedStateFromProps...', props)
+    console.log("app.js getDerivedStateFromProps...", props);
     return state;
   }
 
-
   // render 後執行
   componentDidMount() {
-    console.log('app.js componentDidMount');
+    console.log("app.js componentDidMount");
   }
 
   shouldComponentUpdate() {
-    console.log('app.js shouldComponentUpdate');
+    console.log("app.js shouldComponentUpdate");
     return true;
   }
 
   componentDidUpdate() {
-    console.log('app.js componentDidUpdate');
+    console.log("app.js componentDidUpdate");
   }
 
   deletePersonHandler = personIndex => {
@@ -73,7 +72,7 @@ class App extends Component {
   };
 
   render() {
-    console.log('app.js render...')
+    console.log("app.js render...");
 
     let persons = null;
 
@@ -90,12 +89,22 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
-        <Cockpit
-          title={this.props.appTitle}
-          persons={this.state.persons}
-          showPersons={this.state.showPersons}
-          clicked={this.togglePersonsHandler}
-        />
+        <button
+          onClick={() => {
+            this.setState({ showCockpit: false });
+          }}
+        >
+          Remove Cockpit
+        </button>
+
+        {this.state.showCockpit ? (
+          <Cockpit
+            title={this.props.appTitle}
+            persons={this.state.persons}
+            showPersons={this.state.showPersons}
+            clicked={this.togglePersonsHandler}
+          />
+        ) : null}
         {persons}
       </div>
     );
