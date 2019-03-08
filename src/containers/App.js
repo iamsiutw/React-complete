@@ -18,7 +18,8 @@ class App extends Component {
     ],
     otherState: "something",
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changedCounter: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -62,7 +63,11 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({ persons: persons });
+    this.setState((prevState, props) => {
+      return {
+        persons: persons, changedCounter: prevState.changedCounter + 1 
+      };
+    });
   };
 
   togglePersonsHandler = () => {
@@ -70,7 +75,7 @@ class App extends Component {
     this.setState({
       showPersons: !showPersons
     });
-  };
+  };  
 
   render() {
     console.log("app.js render...");
@@ -89,7 +94,7 @@ class App extends Component {
     }
 
     return (
-      <Aux>
+      <Aux>        
         <button
           onClick={() => {
             this.setState({ showCockpit: false });
