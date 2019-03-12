@@ -49,7 +49,7 @@ class Persons extends PureComponent {
           isAuth={this.props.isAuthenticated}
         />
       );
-    });
+    });    
   }
 }
 
